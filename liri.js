@@ -10,7 +10,7 @@ var spotify = new Spotify(keys.spotify);
 var operation = process.argv[2];
 var subject = process.argv.slice(3);
 
-var searchableSubject =  subject.join(" ");
+var searchableSubject = subject.join(" ");
 
 // node liri.js concert-this <artist/band name here>
 // search the Bands in Town Artist Events API
@@ -26,37 +26,50 @@ var concertThis = function (artist) {
         printData = [];
         for (var i = 0; i < tourData.length; i++) {
             var time = moment(tourData[i].datetime).format('L');
-            printData.push(`Venue: ${tourData[i].venue.name} ` + `| City: ${tourData[i].venue.city}`+ ` | Date: ${time}`);
+            printData.push(`Venue: ${tourData[i].venue.name} ` + `| City: ${tourData[i].venue.city}` + ` | Date: ${time}`);
         };
-        
+
         console.log(printData);
     });
-    
+
 };
 
-//TODO: node liri.js spotify-this-song '<song name here>'
+//node liri.js spotify-this-song '<song name here>'
 //ARTIST
 //THE SONGS NAME
 //A PREVIEW LINK OF THE SONG FROM SPOTIFY
 //THE ALBUM THAT THE SONG IS FROM
 
-var spotifyThisSong = function(song){
-    
-    spotify.search({
-        type: 'track',
-        query: song
-    }).then(function(response){
-        // console.log(response.tracks.items[0].artists[0].name);
-        var track = response.tracks.items[0];
-        
-        console.log(`Song: ${track.name} | Artist: ${track.artists[0].name}  | Album: ${track.album.name}  | Preview: ${track.preview_url}`);
-    }).catch(function(err){
-        console.log(err);
-    });
-  
+var spotifyThisSong = function (song) {
+    if (song != "") {
+        spotify.search({
+            type: 'track',
+            query: song
+        }).then(function (response) {
+            // console.log(response.tracks.items[0].artists[0].name);
+            var track = response.tracks.items[0];
+
+            console.log(`Song: ${track.name} | Artist: ${track.artists[0].name}  | Album: ${track.album.name}  | Preview: ${track.preview_url}`);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }else{
+        // if no song is provided then your program will default to "The Sign" by Ace of Base
+        spotify.search({
+            type: 'track',
+            query: "The Sign"
+        }).then(function (response) {
+            console.log(response.tracks.items[5].artists[0].name);
+            var track = response.tracks.items[5];
+
+            console.log(`Song: ${track.name} | Artist: ${track.artists[0].name}  | Album: ${track.album.name}  | Preview: ${track.preview_url}`);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
 }
 
-//TODO: if no song is provided then your program will default to "The Sign" by Ace of Base
 
 
 //TODO: node liri.js movie-this '<movie name here>'
@@ -82,7 +95,7 @@ var spotifyThisSong = function(song){
 if (operation === "concert-this") {
     console.log(searchableSubject);
     concertThis(searchableSubject);
-}else if (operation === 'spotify-this-song'){
+} else if (operation === 'spotify-this-song') {
     console.log(searchableSubject);
     spotifyThisSong(searchableSubject);
 }
