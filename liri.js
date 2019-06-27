@@ -126,6 +126,19 @@ var movieThis = function (movie) {
     }
 }
 
+var doWhatItSays = function(){
+
+    fs.readFile("random.txt", "utf8", function(error, data){
+        if(error){
+            return console.log(error);
+        }
+        var dataArr = data.split(",");
+        var stringData =dataArr[1];
+        spotifyThisSong(stringData);
+    });
+    
+    
+};
 
 //TODO: node liri.js do-what-it-says
 //run spotify-this-song for "I Want it That Way" in random.txt
@@ -141,6 +154,8 @@ if (operation === "concert-this") {
 } else if (operation === 'movie-this') {
     console.log(searchableSubject);
     movieThis(searchableSubject);
+}else if (operation === 'do-what-it-says'){
+    doWhatItSays();
 }
 
 
