@@ -1,17 +1,37 @@
 require("dotenv").config();
+var axios = require("axios");
+var fs = require("fs");
+var moment = require("moment");
 
 var keys = require("./keys.js");
-var spotify = new spotify(keys.spotify);
+// var spotify = new spotify(keys.spotify);
 
-// TODO: node liri.js concert-this <artist/band name here>
+var operation = process.argv[2];
+var subject = process.argv.slice(3);
+
+var searchableSubject =  subject.join(" ");
+
+// node liri.js concert-this <artist/band name here>
 // search the Bands in Town Artist Events API
 //"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
 //show NAME OF THE VENUE
 // VENUE LOCATION
 // DATE OF THE EVENT in MM/DD/YYYY
-
-
-
+var concertThis = function (artist) {
+    var url = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    var printData;
+    axios.get(url).then(function (response) {
+        var tourData = response.data;
+        printData = [];
+        for (var i = 0; i < tourData.length; i++) {
+            var time = moment(tourData[i].datetime).format('L');
+            printData.push(`Venue: ${tourData[i].venue.name} ` + `| City: ${tourData[i].venue.city}`+ ` | Date: ${time}`);
+        };
+        
+        console.log(printData);
+    });
+    
+};
 
 //TODO: node liri.js spotify-this-song '<song name here>'
 //ARTIST
@@ -41,6 +61,10 @@ var spotify = new spotify(keys.spotify);
 
 //TODO: read me
 
+if (operation === "concert-this") {
+    console.log(searchableSubject);
+    concertThis(searchableSubject);
+}
 
 
 
