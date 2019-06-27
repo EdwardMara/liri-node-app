@@ -30,7 +30,7 @@ var concertThis = function (artist) {
         };
 
         console.log(printData);
-    }).catch(function(err){
+    }).catch(function (err) {
         console.log(err);
     });
 
@@ -55,7 +55,7 @@ var spotifyThisSong = function (song) {
         }).catch(function (err) {
             console.log(err);
         });
-    }else{
+    } else {
         // if no song is provided then your program will default to "The Sign" by Ace of Base
         spotify.search({
             type: 'track',
@@ -76,24 +76,6 @@ var spotifyThisSong = function (song) {
 
 // node liri.js movie-this '<movie name here>'
 
-var movieThis = function(movie){
-    var url = "https://www.omdbapi.com/?t="+movie+"&y=&plot=short&apikey=trilogy";
-    axios.get(url).then(function (response) {
-        console.log(response.data);
-        console.log(
-            `Title: ${response.data.Title}\n`,
-            `Year: ${response.data.Year}\n`,
-            `IMDB Rating: ${response.data.imdbRating}\n`,
-            `Rotten Tomatoes: ${response.data.Ratings[1].Value}\n`,
-            `Country: ${response.data.Country}\n`,
-            `Language: ${response.data.Language}\n`,
-            `Plot: ${response.data.Plot}\n`,
-            `Actors: ${response.data.Actors}\n`
-
-        );
-            
-    });
-}
 // http://www.omdbapi.com/?t=***MOVIE NAME***&y=&plot=short&apikey=trilogy
 // * Title of the movie.
 // * Year the movie came out.
@@ -104,9 +86,46 @@ var movieThis = function(movie){
 // * Plot of the movie.
 // * Actors in the movie.
 
-//TODO:no movie typed will output Mr. Nobody
+//no movie typed will output Mr. Nobody
 // If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
 // It's on Netflix!
+
+var movieThis = function (movie) {
+    if (movie != "") {
+        var url = "https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+        axios.get(url).then(function (response) {
+            // console.log(response.data);
+            console.log(
+                `Title: ${response.data.Title}\n`,
+                `Year: ${response.data.Year}\n`,
+                `IMDB Rating: ${response.data.imdbRating}\n`,
+                `Rotten Tomatoes: ${response.data.Ratings[1].Value}\n`,
+                `Country: ${response.data.Country}\n`,
+                `Language: ${response.data.Language}\n`,
+                `Plot: ${response.data.Plot}\n`,
+                `Actors: ${response.data.Actors}\n`
+            );
+
+        });
+    } else {
+        axios.get("https://www.omdbapi.com/?t=mr nobody&y=&plot=short&apikey=trilogy").then(function (response) {
+            // console.log(response.data);
+            console.log(
+                `Title: ${response.data.Title}\n`,
+                `Year: ${response.data.Year}\n`,
+                `IMDB Rating: ${response.data.imdbRating}\n`,
+                `Rotten Tomatoes: ${response.data.Ratings[1].Value}\n`,
+                `Country: ${response.data.Country}\n`,
+                `Language: ${response.data.Language}\n`,
+                `Plot: ${response.data.Plot}\n`,
+                `Actors: ${response.data.Actors}\n`
+            );
+
+        });
+
+    }
+}
+
 
 //TODO: node liri.js do-what-it-says
 //run spotify-this-song for "I Want it That Way" in random.txt
@@ -119,7 +138,7 @@ if (operation === "concert-this") {
 } else if (operation === 'spotify-this-song') {
     console.log(searchableSubject);
     spotifyThisSong(searchableSubject);
-}else if (operation === 'movie-this'){
+} else if (operation === 'movie-this') {
     console.log(searchableSubject);
     movieThis(searchableSubject);
 }
