@@ -30,6 +30,8 @@ var concertThis = function (artist) {
         };
 
         console.log(printData);
+    }).catch(function(err){
+        console.log(err);
     });
 
 };
@@ -68,12 +70,31 @@ var spotifyThisSong = function (song) {
         });
     }
 
+};
+
+
+
+// node liri.js movie-this '<movie name here>'
+
+var movieThis = function(movie){
+    var url = "https://www.omdbapi.com/?t="+movie+"&y=&plot=short&apikey=trilogy";
+    axios.get(url).then(function (response) {
+        console.log(response.data);
+        console.log(
+            `Title: ${response.data.Title}\n`,
+            `Year: ${response.data.Year}\n`,
+            `IMDB Rating: ${response.data.imdbRating}\n`,
+            `Rotten Tomatoes: ${response.data.Ratings[1].Value}\n`,
+            `Country: ${response.data.Country}\n`,
+            `Language: ${response.data.Language}\n`,
+            `Plot: ${response.data.Plot}\n`,
+            `Actors: ${response.data.Actors}\n`
+
+        );
+            
+    });
 }
-
-
-
-//TODO: node liri.js movie-this '<movie name here>'
-
+// http://www.omdbapi.com/?t=***MOVIE NAME***&y=&plot=short&apikey=trilogy
 // * Title of the movie.
 // * Year the movie came out.
 // * IMDB Rating of the movie.
@@ -98,6 +119,9 @@ if (operation === "concert-this") {
 } else if (operation === 'spotify-this-song') {
     console.log(searchableSubject);
     spotifyThisSong(searchableSubject);
+}else if (operation === 'movie-this'){
+    console.log(searchableSubject);
+    movieThis(searchableSubject);
 }
 
 
