@@ -140,7 +140,7 @@ var doWhatItSays = function(){
     
 };
 
-//TODO: node liri.js do-what-it-says
+// node liri.js do-what-it-says
 //run spotify-this-song for "I Want it That Way" in random.txt
 
 //TODO: read me
