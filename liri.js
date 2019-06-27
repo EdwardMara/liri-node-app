@@ -2,9 +2,10 @@ require("dotenv").config();
 var axios = require("axios");
 var fs = require("fs");
 var moment = require("moment");
+var Spotify = require("node-spotify-api");
 
 var keys = require("./keys.js");
-// var spotify = new spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 
 var operation = process.argv[2];
 var subject = process.argv.slice(3);
@@ -39,10 +40,27 @@ var concertThis = function (artist) {
 //A PREVIEW LINK OF THE SONG FROM SPOTIFY
 //THE ALBUM THAT THE SONG IS FROM
 
+var spotifyThisSong = function(song){
+    
+    spotify.search({
+        type: 'track',
+        query: song
+    }).then(function(response){
+        // console.log(response.tracks.items[0].artists[0].name);
+        var track = response.tracks.items[0];
+        
+        console.log(`Song: ${track.name} | Artist: ${track.artists[0].name}  | Album: ${track.album.name}  | Preview: ${track.preview_url}`);
+    }).catch(function(err){
+        console.log(err);
+    });
+  
+}
+
 //TODO: if no song is provided then your program will default to "The Sign" by Ace of Base
 
 
 //TODO: node liri.js movie-this '<movie name here>'
+
 // * Title of the movie.
 // * Year the movie came out.
 // * IMDB Rating of the movie.
@@ -64,8 +82,10 @@ var concertThis = function (artist) {
 if (operation === "concert-this") {
     console.log(searchableSubject);
     concertThis(searchableSubject);
+}else if (operation === 'spotify-this-song'){
+    console.log(searchableSubject);
+    spotifyThisSong(searchableSubject);
 }
-
 
 
 
